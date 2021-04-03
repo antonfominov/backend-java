@@ -1,9 +1,9 @@
-Ext.define('AppExtJS.viewmodel.view.Trainers', {
+Ext.define('AppExtJS.viewmodel.view.Trainings', {
 	extend : 'Ext.grid.Panel',
-	xtype : 'trainers',
-	id : 'trainers',
-	title : 'Тренеры',
-	width : 900,
+	xtype : 'trainings',
+	id : 'trainings',
+	title : 'Тренировки',
+	width : 1000,
 	height : 500,
 	hideMode : 'visibility',
 	
@@ -16,12 +16,12 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
 		readOnly : true
 	},
 	publishes: ['readOnly'],
-	reference : 'trainers',
+	reference : 'trainings',
 
-	controller : 'viewportTrainersController',
+	controller : 'viewportTrainingsController',
 
 	buttonAlign : 'center',
-	reference : 'trainers',
+	reference : 'trainings',
 	listeners : {
 		select : 'myItemClick',
 	},
@@ -30,7 +30,7 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
 
 	columnLines : true,
 	store : {
-		type : 'trainers'
+		type : 'trainings'
 	},
 	
 	plugins: [{
@@ -41,7 +41,7 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
         listeners: {
         	beforeedit: { 
         	    fn: function(event,editor){
-        	    var isEdit = Ext.getCmp('trainers').getViewModel().data.isEdit;
+        	    var isEdit = Ext.getCmp('trainings').getViewModel().data.isEdit;
         	    if(isEdit === false){
         	    	 return false;
         	     }
@@ -57,48 +57,57 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
         expandOnDblClick: false,
         rowBodyTpl : new Ext.XTemplate(
             '<p><b>Фамилия:</b> {secondName}</p>',
-            '<p><b>Имя:</b> {firstName}</p>',
+            '<p><b>Максимальное кол-во:</b> {maxValue}</p>',
         )
     }],
 
-	columns : [{
-        xtype: 'rownumberer'
-    }, {
+	columns : [ {
 		text : "Номер",
 		width : 100,
 		sortable : true,
 		dataIndex : 'id',
 	}, {
-		text : "Фамилия",
+		text : "Название",
 		width: 170,
 		sortable : true,
-		dataIndex : 'secondName',
+		dataIndex : 'name',
 		editor : {
 			editor : 'textfield',
 			allowBlank : false
 		}
 	}, {
-		text : "Имя",
+		text : "Время начала",
 		width : 170,
 		sortable : true,
-		dataIndex : 'firstName',
+		dataIndex : 'startTime',
 		editor : {
 			editor : 'textfield',
 			allowBlank : false
 		}
 	}, {
-		text : "Отчество",
+		text : "Тренер",
 		width : 170,
 		sortable : true,
-		dataIndex : 'lastName',
+		dataIndex : 'parentName',
 		editor : {
 			editor : 'textfield',
+			allowBlank : false
+		}
+	}, {
+		xtype: 'numbercolumn',
+		text : "Продолжительность",
+		width : 170,
+		sortable : true,
+		dataIndex : 'time',
+		format: '0,0',
+		editor : {
+			editor : 'numberfield',
 			allowBlank : false
 		}
 	},
 	  {
 		xtype: 'numbercolumn',
-		text : "Оплата в час",
+		text : "Стоимость",
 		format: '0,0 руб',
 		flex : 1,
 		sortable : true,
@@ -107,7 +116,25 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
 			xtype : 'numberfield',
 			allowBlank : false
 		}
-	},],
+	},{
+        text     : 'Заполненность',
+        xtype    : 'widgetcolumn',
+        width    : 120,
+        dataIndex : 'progress',
+        widget: {
+            bind: {
+            	text: '{record.value}/{record.maxValue}'
+            },
+            xtype: 'progressbarwidget',
+            /*textTpl: [
+                '{value:number("0.0")*100}%'
+                ]*/
+        },
+        onWidgetAttach: function(col, widget, record) {
+            var sum = col.up("grid").getStore().sum("price")
+            widget.setValue(record.get("price")/sum)
+        }
+    },],
 	
 	/*plugins: [{
         ptype: 'rowexpander',
@@ -118,9 +145,9 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
     }],*/
 	
 	tbar : [ {
-		text : 'Добавить тренера',
+		text : 'Добавить тренировку',
 		handler : 'onAddClick',
-		tooltip : 'Добавить нового',
+		tooltip : 'Добавить новую',
 		iconCls : 'x-fa fa-plus',
 		bind : {
 			hidden : '{readOnly}'
@@ -129,11 +156,11 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
 	}, {
 		text : 'Удалить',
 		handler : 'onRemoveClick',
-		tooltip : 'Удалить выбранного',
+		tooltip : 'Удалить выбранную',
 		iconCls : 'x-fa fa-minus',
 		bind : {
 			hidden : '{readOnly}',
-			disabled : '{trainers.readOnly}'
+			disabled : '{trainings.readOnly}'
 		}
 	}, {
 		handler : 'onRefreshClick',
@@ -142,11 +169,11 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
 	},
 	{
         xtype: 'combobox',
-        emptyText: 'Выберите клуб',
-        value: 'name',
+        emptyText: 'Выберите тренера',
+        value: 'secondName',
         valueField:'id',
-        displayField: 'name',
-        id: 'trainers-combo',
+        displayField: 'secondName',
+        id: 'trainings-combo',
         queryMode:'remote',
         listeners : {
     		select : 'onComboClick',
@@ -154,10 +181,10 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
         store: {
         	proxy: {
                 type: 'ajax',
-                url: '/clubs',
+                url: '/trainers',
                 reader: {
                     type: 'json',
-                    rootProperty: 'clubs'
+                    rootProperty: 'trainers'
                 }
             }
         }

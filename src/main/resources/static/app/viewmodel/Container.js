@@ -9,7 +9,10 @@ Ext.define('AppExtJS.viewmodel.Container', {
 		'AppExtJS.viewmodel.view.Cities',
 		'AppExtJS.viewmodel.view.Clubs',
 		'AppExtJS.viewmodel.view.Trainers',
+		'AppExtJS.viewmodel.view.Trainings',
+		'AppExtJS.viewmodel.view.Clients',
 		'AppExtJS.viewmodel.view.Users',
+		'AppExtJS.viewmodel.view.Statistic',
 		
 		'AppExtJS.viewmodel.view.UpdateForm',
 		'AppExtJS.viewmodel.view.UpdateFormItem',

@@ -25,7 +25,7 @@ Ext.define('AppExtJS.viewmodel.view.CitiesEditor', {
 	}, {
 		text : 'Очистить',
 		handler : function() {
-			Ext.getCmp('nameItem').setValue('');
+			Ext.getCmp('name').setValue('');
 
 		}
 	} ],

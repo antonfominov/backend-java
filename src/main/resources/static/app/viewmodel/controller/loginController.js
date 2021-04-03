@@ -20,24 +20,26 @@ Ext.define('AppExtJS.viewmodel.controller.loginController', {
                 params: {username : username, password: password},
                 success: function(response, options){
                 	var ob = Ext.decode(response.responseText);
-                    if((ob != 'null') && ob.password == password){
+                    if(ob != 'null' && ob < 3){
                         Ext.create('AppExtJS.viewmodel.Container', {
                                 items: [
                                     {xtype: 'side-navigation-tabs'}
                                 ]
                             }
                         );
-                        if(ob.role == 'user'){
+                        if(ob == '1'){
                         Ext.getCmp('main-window').getViewModel().data.readOnly = true;
                         Ext.getCmp('users').setReadOnly(true);
                         
                         // Запрет редактирования записей если не хватает прав
                         Ext.getCmp('clubs').getViewModel().data.isEdit = false;
                         Ext.getCmp('cities').getViewModel().data.isEdit = false;
+                        Ext.getCmp('trainers').getViewModel().data.isEdit = false;
+                        Ext.getCmp('trainings').getViewModel().data.isEdit = false;
                         }
                     }
                     else{
-                        Ext.MessageBox.alert("Ошибка", 'Не правильно введен логин или пароль');
+                        Ext.MessageBox.alert("Ошибка", 'Не правильно введен логин и/или пароль');
                     };
                    // Ext.MessageBox.alert('Status', response.responseText);
                 },

@@ -1,18 +1,13 @@
 package appweb.extjs.viewmodel.controller;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-@Table(name="users_table")
-public class Users {
+@Table(name="active_users_table")
+public class ActiveUsers {
 
-    public Users() {}
+    public ActiveUsers() {}
+    
     @Id
     @Column(name = "id")
     
@@ -36,10 +31,6 @@ public class Users {
     
     @Column(name = "role")
     private String role;
-    
-    @ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="admins")
-	private Admins admins;
 
     public Integer getId() {
         return id;
@@ -92,13 +83,5 @@ public class Users {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    @JsonIgnore
-	public Admins getAdmin() {
-		return admins;
-	}
-	
-	public void setAdmin(Admins admins) {
-		this.admins = admins;
-	}
+
 }

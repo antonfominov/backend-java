@@ -1,12 +1,12 @@
-Ext.define('AppExtJS.viewmodel.view.ClubsEditor', {
+Ext.define('AppExtJS.viewmodel.view.TrainersEditor', {
     extend: 'Ext.window.Window',
-    xtype: 'clubs-editor',
-    id: 'clubsEditor',
-    controller: 'viewportClubsController',
-    reference : 'clubs-editor',
+    xtype: 'trainers-editor',
+    id: 'trainersEditor',
+    controller: 'viewportTrainersController',
+    reference : 'trainers-editor',
     height: 400,
     width: 400,
-    title: 'Добавление нового клуба',
+    title: 'Добавление нового тренера',
     scrollable: true,
     bodyPadding: 10,
     constrain: true,
@@ -16,37 +16,37 @@ Ext.define('AppExtJS.viewmodel.view.ClubsEditor', {
 	
 	 items: [{
         xtype: 'textfield',
-        name: 'name',
-		id: 'name',
-        fieldLabel: 'Название',
+        name: 'secondName',
+		id: 'secondName',
+        fieldLabel: 'Фамилия',
         allowBlank: true
     },
     {
         xtype: 'textfield',
-        name: 'adress',
-		id: 'adress',
-        fieldLabel: 'Адрес',
+        name: 'firstName',
+		id: 'firstName',
+        fieldLabel: 'Имя',
         allowBlank: false
     },
     {
         xtype: 'textfield',
-        name: 'openTime',
-		id: 'openTime',
-        fieldLabel: 'Время открытия',
+        name: 'lastName',
+		id: 'lastName',
+        fieldLabel: 'Отчество',
         allowBlank: false
     },
     {
-        xtype: 'textfield',
-        name: 'closeTime',
-		id: 'closeTime',
-        fieldLabel: 'Время закрытия',
+        xtype: 'numberfield',
+        name: 'price',
+		id: 'price',
+        fieldLabel: 'Оплата в час',
         allowBlank: false
     },
     {
         xtype: 'combobox',
-        name: 'city',
-		id: 'city',
-        fieldLabel: 'Город',
+        name: 'club',
+		id: 'club',
+        fieldLabel: 'Клуб',
         forceSelection: true,
         allowBlank: false,
         value: 'name',
@@ -56,10 +56,10 @@ Ext.define('AppExtJS.viewmodel.view.ClubsEditor', {
         store: {
         	proxy: {
                 type: 'ajax',
-                url: '/cities',
+                url: '/clubs',
                 reader: {
                     type: 'json',
-                    rootProperty: 'cities'
+                    rootProperty: 'clubs'
                 }
             }
         }
@@ -68,7 +68,7 @@ Ext.define('AppExtJS.viewmodel.view.ClubsEditor', {
 buttons: [{
         text: 'Принять',
         formBind: true,
-        handler: 'userCreate',
+        handler: 'trainerCreate',
 },
 {
         text: 'Очистить',
@@ -78,7 +78,6 @@ buttons: [{
 			Ext.getCmp('openTime').setValue('');
 			Ext.getCmp('closeTime').setValue('');
 			Ext.getCmp('city').setValue('');
-	
         }
     }],
 });

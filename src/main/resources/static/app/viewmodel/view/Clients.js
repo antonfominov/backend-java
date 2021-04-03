@@ -1,9 +1,9 @@
-Ext.define('AppExtJS.viewmodel.view.Trainers', {
+Ext.define('AppExtJS.viewmodel.view.Clients', {
 	extend : 'Ext.grid.Panel',
-	xtype : 'trainers',
-	id : 'trainers',
-	title : 'Тренеры',
-	width : 900,
+	xtype : 'clients',
+	id : 'clients',
+	title : 'Клиенты',
+	width : 1000,
 	height : 500,
 	hideMode : 'visibility',
 	
@@ -16,12 +16,12 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
 		readOnly : true
 	},
 	publishes: ['readOnly'],
-	reference : 'trainers',
+	reference : 'clients',
 
-	controller : 'viewportTrainersController',
+	controller : 'viewportClientsController',
 
 	buttonAlign : 'center',
-	reference : 'trainers',
+	reference : 'clients',
 	listeners : {
 		select : 'myItemClick',
 	},
@@ -30,7 +30,7 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
 
 	columnLines : true,
 	store : {
-		type : 'trainers'
+		type : 'clients'
 	},
 	
 	plugins: [{
@@ -41,7 +41,7 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
         listeners: {
         	beforeedit: { 
         	    fn: function(event,editor){
-        	    var isEdit = Ext.getCmp('trainers').getViewModel().data.isEdit;
+        	    var isEdit = Ext.getCmp('clients').getViewModel().data.isEdit;
         	    if(isEdit === false){
         	    	 return false;
         	     }
@@ -61,9 +61,7 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
         )
     }],
 
-	columns : [{
-        xtype: 'rownumberer'
-    }, {
+	columns : [ {
 		text : "Номер",
 		width : 100,
 		sortable : true,
@@ -95,19 +93,30 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
 			editor : 'textfield',
 			allowBlank : false
 		}
+	}, {
+		xtype: 'datecolumn',
+		text : "Дата рождения",
+		width : 170,
+		sortable : true,
+		dataIndex : 'birthday',
+		format: '0,0',
+		editor : {
+			editor : 'datefield',
+			allowBlank : false,
+			format: 'd/m/Y',
+		}
 	},
 	  {
-		xtype: 'numbercolumn',
-		text : "Оплата в час",
-		format: '0,0 руб',
+		text : "Номер телефона",
+		//format: '0,0 руб',
 		flex : 1,
 		sortable : true,
-		dataIndex : 'price',
+		dataIndex : 'phone',
 		editor : {
-			xtype : 'numberfield',
+			xtype : 'textfield',
 			allowBlank : false
 		}
-	},],
+	}],
 	
 	/*plugins: [{
         ptype: 'rowexpander',
@@ -118,7 +127,7 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
     }],*/
 	
 	tbar : [ {
-		text : 'Добавить тренера',
+		text : 'Добавить клиента',
 		handler : 'onAddClick',
 		tooltip : 'Добавить нового',
 		iconCls : 'x-fa fa-plus',
@@ -133,20 +142,20 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
 		iconCls : 'x-fa fa-minus',
 		bind : {
 			hidden : '{readOnly}',
-			disabled : '{trainers.readOnly}'
+			disabled : '{clients.readOnly}'
 		}
 	}, {
 		handler : 'onRefreshClick',
 		tooltip : 'Обновить',
 		iconCls : 'x-fa fa-refresh',
 	},
-	{
+	/*{
         xtype: 'combobox',
-        emptyText: 'Выберите клуб',
-        value: 'name',
+        emptyText: 'Выберите тренера',
+        value: 'secondName',
         valueField:'id',
-        displayField: 'name',
-        id: 'trainers-combo',
+        displayField: 'secondName',
+        id: 'trainings-combo',
         queryMode:'remote',
         listeners : {
     		select : 'onComboClick',
@@ -154,12 +163,12 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
         store: {
         	proxy: {
                 type: 'ajax',
-                url: '/clubs',
+                url: '/trainers',
                 reader: {
                     type: 'json',
-                    rootProperty: 'clubs'
+                    rootProperty: 'trainers'
                 }
             }
         }
-    }],
+    }*/],
 });

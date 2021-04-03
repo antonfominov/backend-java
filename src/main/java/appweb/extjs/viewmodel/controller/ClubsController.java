@@ -3,6 +3,8 @@ package appweb.extjs.viewmodel.controller;
 import org.springframework.web.bind.annotation.*;
 
 import appweb.extjs.repository.ClubsRepository;
+import appweb.extjs.repository.UsersRepository;
+import appweb.extjs.repository.AdminsRepository;
 import appweb.extjs.repository.CitiesRepository;
 import java.util.List;
 import java.util.Optional;
@@ -15,13 +17,26 @@ public class ClubsController {
 
 	@Autowired
 	private ClubsRepository clubsRepository;
-
 	@Autowired
 	private CitiesRepository citiesRepository;
+	@Autowired
+	private UsersRepository usersRepository;
+	@Autowired
+	private AdminsRepository adminsRepository;
 
 	@GetMapping("/clubs")
-	public List<Clubs> getAll() {
-		return (List<Clubs>) clubsRepository.findAll();
+	public List<Clubs> getAll(@CookieValue(value = "id", defaultValue = "0") Integer id) {
+		//return (List<Clubs>) clubsRepository.findAll();
+		Users user = usersRepository.findById(id).orElse(new Users());
+		if(user.getRole().equals("admin")) {
+			List<Clubs> clubs = adminsRepository.findByUsername(user.getUsername()).orElse(new Admins()).getClubs();
+			return clubs;
+		}
+		else if(user.getRole().equals("user")) {
+			List<Clubs> clubs = user.getAdmin().getClubs();
+			return clubs;
+		}
+		return null;
 	}
 
 	@GetMapping("/clubs/{Id}")
@@ -38,14 +53,19 @@ public class ClubsController {
 
 	@PostMapping("/clubs/create")
 	public Boolean create(@RequestParam String name, @RequestParam String adress, @RequestParam String openTime,
-			@RequestParam String closeTime, @RequestParam Integer city) {
+			@RequestParam String closeTime, @RequestParam Integer city,  @CookieValue(value = "id", defaultValue = "0") Integer id) {
+		
+		Users user = usersRepository.findById(id).orElse(new Users());
+		Admins admin = adminsRepository.findByUsername(user.getUsername()).orElse(new Admins());
 		Cities city1 = citiesRepository.findById(city).orElse(new Cities());
 		Clubs club = new Clubs();
 		club.setName(name);
 		club.setAdress(adress);
 		club.setOpenTime(openTime);
 		club.setCloseTime(closeTime);
+		club.setParentName(city1.getName());
 		club.setCity(city1);
+		club.setAdmins(admin);
 		clubsRepository.save(club);
 		return true;
 	}

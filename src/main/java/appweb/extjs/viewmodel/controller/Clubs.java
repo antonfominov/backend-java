@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Parent;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -32,11 +34,20 @@ public class Clubs {
 	@Column(name = "closeTime")
 	private String closeTime;
 	
+	@Column(name = "parentName")
+	private String parentName;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="city")
 	private Cities city;
-
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="admin")
+	private Admins admins;
+	
+	@Column(name = "trainers")
+    @OneToMany(mappedBy="clubs", cascade = CascadeType.ALL)
+    private List<Trainers> trainers;
 	
 	public Integer getId() {
 		return id;
@@ -85,5 +96,30 @@ public class Clubs {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@JsonIgnore
+	public Admins getAdmins() {
+		return admins;
+	}
+
+	public void setAdmins(Admins admins) {
+		this.admins = admins;
+	}
+	
+	public List<Trainers> getTrainers(){
+    	return trainers;
+    }
+    
+    public void setTrainers(List<Trainers> trainers) {
+    	this.trainers = trainers;
+    }
+    
+    public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
 	}
 }

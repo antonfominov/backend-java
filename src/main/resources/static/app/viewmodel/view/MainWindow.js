@@ -9,12 +9,20 @@ Ext.define('AppExtJS.viewmodel.view.MainWindow', {
 			'AppExtJS.viewmodel.store.UsersStore',
 			'AppExtJS.viewmodel.store.CitiesStore',
 			'AppExtJS.viewmodel.store.ClubsStore',
+			'AppExtJS.viewmodel.store.TrainersStore',
+			'AppExtJS.viewmodel.store.TrainingsStore',
+			'AppExtJS.viewmodel.store.ClientsStore',
+			'AppExtJS.viewmodel.store.StatisticStore',
+			
 			'AppExtJS.viewmodel.controller.itemController',
 			'AppExtJS.viewmodel.controller.addController',
 			'AppExtJS.viewmodel.controller.labelController',
 			'AppExtJS.viewmodel.controller.usersController',
 			'AppExtJS.viewmodel.controller.citiesController',
 			'AppExtJS.viewmodel.controller.clubsController',
+			'AppExtJS.viewmodel.controller.trainersController',
+			'AppExtJS.viewmodel.controller.trainingsController',
+			'AppExtJS.viewmodel.controller.clientsController',
 			'AppExtJS.viewmodel.view.Window', ],
 			
 			viewModel: {
@@ -25,7 +33,7 @@ Ext.define('AppExtJS.viewmodel.view.MainWindow', {
 	id: 'main-window',
 
 	height : 900,
-	width : 1100,
+	width : 1500,
 
 	tabPosition : 'left',
 	tabRotation : 0,
@@ -56,6 +64,12 @@ Ext.define('AppExtJS.viewmodel.view.MainWindow', {
 			xtype : 'row-numberer4'
 		} ]
 	}, {
+		title : 'Статистика',
+		iconCls : 'x-fa fa-list-alt',
+		items : [ {
+			xtype : 'statistic'
+		} ]
+	}, {
 		title : 'Города',
 		iconCls : 'x-fa fa-globe',
 		items : [ {
@@ -69,18 +83,36 @@ Ext.define('AppExtJS.viewmodel.view.MainWindow', {
 		}]
 	},{
 		title : 'Тренеры',
-		iconCls : 'x-fa fa-building-o',
+		iconCls : 'x-fa fa-male',
 		items : [ {
 			xtype : 'trainers'
 		}]
 	},{
+		title : 'Тренировки',
+		iconCls : 'x-fa fa-futbol-o',
+		items : [ {
+			xtype : 'trainings'
+		}]
+	},{
+		title : 'Клиенты',
+		iconCls : 'x-fa fa-futbol-o',
+		items : [ {
+			xtype : 'clients'
+		}]
+	},{
 		title : 'Пользователи',
-		iconCls : 'x-fa fa-male',
+		iconCls : 'x-fa fa-users',
 		items : [ {
 			xtype : 'users'
 		}],
+		hidden: true,
+		tabConfig: {
+			bind: {
+				hidden : '{readOnly}'
+			}
+		},
 		bind: {
-			disabled: '{readOnly}'
+			//disabled: '{readOnly}'
 		}
 	}, ]
 });

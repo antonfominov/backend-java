@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "cities_table")
 public class Cities {
@@ -24,6 +26,10 @@ public class Cities {
 	@Column(name = "clubs")
 	@OneToMany(mappedBy="city", cascade = CascadeType.ALL)
 	private List<Clubs> clubs;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="admins")
+	private Admins admins;
 
 	public Integer getId() {
 		return id;
@@ -47,6 +53,15 @@ public class Cities {
 
 	public void setClubs(List<Clubs> clubs) { 
 		this.clubs = clubs;
+	}
+	
+	@JsonIgnore
+	public Admins getAdmin() {
+		return admins;
+	}
+	
+	public void setAdmin(Admins admins) {
+		this.admins = admins;
 	}
 
 }
