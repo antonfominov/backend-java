@@ -66,6 +66,10 @@ public class ClubsController {
 		club.setParentName(city1.getName());
 		club.setCity(city1);
 		club.setAdmins(admin);
+		
+		admin.getDays().forEach(day -> club.getDaySet().add(day));
+		admin.getDays().forEach(day -> day.getClubSet().add(club));
+		System.out.println(admin.getDays());
 		clubsRepository.save(club);
 		return true;
 	}

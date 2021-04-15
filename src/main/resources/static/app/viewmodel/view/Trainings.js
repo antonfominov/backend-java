@@ -130,10 +130,10 @@ Ext.define('AppExtJS.viewmodel.view.Trainings', {
                 '{value:number("0.0")*100}%'
                 ]*/
         },
-        onWidgetAttach: function(col, widget, record) {
+        /*onWidgetAttach: function(col, widget, record) {
             var sum = col.up("grid").getStore().sum("price")
             widget.setValue(record.get("price")/sum)
-        }
+        }*/
     },],
 	
 	/*plugins: [{

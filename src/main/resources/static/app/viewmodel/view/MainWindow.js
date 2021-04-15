@@ -23,6 +23,7 @@ Ext.define('AppExtJS.viewmodel.view.MainWindow', {
 			'AppExtJS.viewmodel.controller.trainersController',
 			'AppExtJS.viewmodel.controller.trainingsController',
 			'AppExtJS.viewmodel.controller.clientsController',
+			'AppExtJS.viewmodel.controller.sheduleController',
 			'AppExtJS.viewmodel.view.Window', ],
 			
 			viewModel: {
@@ -68,6 +69,12 @@ Ext.define('AppExtJS.viewmodel.view.MainWindow', {
 		iconCls : 'x-fa fa-list-alt',
 		items : [ {
 			xtype : 'statistic'
+		} ]
+	}, {
+		title : 'Расписание',
+		iconCls : 'x-fa fa-list-alt',
+		items : [ {
+			xtype : 'shedule'
 		} ]
 	}, {
 		title : 'Города',

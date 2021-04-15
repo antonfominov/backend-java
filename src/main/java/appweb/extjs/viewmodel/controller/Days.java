@@ -28,6 +28,9 @@ public class Days {
 	@Column(name = "name")
 	private String name;
 	
+	@Column(name = "number")
+	private Integer number;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="admin")
 	private Admins admins;
@@ -42,8 +45,11 @@ public class Days {
     private Set<Trainings> trainings = new HashSet<>();
 	@PreRemove
 	 private void removeListsFromMovie() {
-	     getTrainingSet().clear();
+	     getTrainings().clear();
 	 }
+	
+	@ManyToMany(mappedBy = "days")
+    private Set<Clubs> clubs = new HashSet<>();
 
 	public Integer getId() {
 		return id;
@@ -61,15 +67,14 @@ public class Days {
 		this.name = name;
 	}
 	
-	@JsonIgnore
-	private Set<Trainings> getTrainingSet() {
-		return trainings;
+	public Integer getNumber() {
+		return number;
 	}
-	
-	public void setTrainingSet(Set<Trainings> trainings) {
-		this.trainings = trainings;
+
+	public void setNumber(Integer number) {
+		this.number = number;
 	}
-	
+
 	@JsonIgnore
 	public Admins getAdmins() {
 		return admins;
@@ -77,5 +82,22 @@ public class Days {
 
 	public void setAdmins(Admins admins) {
 		this.admins = admins;
+	}
+	
+	@JsonIgnore
+	public Set<Clubs> getClubSet() {
+		return clubs;
+	}
+
+	public void setClubSet(Set<Clubs> clubs) {
+		this.clubs = clubs;
+	}
+
+	public Set<Trainings> getTrainings() {
+		return trainings;
+	}
+
+	public void setTrainings(Set<Trainings> trainings) {
+		this.trainings = trainings;
 	}
 }

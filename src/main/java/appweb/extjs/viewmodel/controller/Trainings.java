@@ -152,6 +152,7 @@ public class Trainings {
 		this.parentName = parentName;
 	}
 	
+	@JsonIgnore
 	public Set<Days> getDaySet() {
 		return days;
 	}

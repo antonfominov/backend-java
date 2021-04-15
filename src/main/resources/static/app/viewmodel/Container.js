@@ -13,6 +13,7 @@ Ext.define('AppExtJS.viewmodel.Container', {
 		'AppExtJS.viewmodel.view.Clients',
 		'AppExtJS.viewmodel.view.Users',
 		'AppExtJS.viewmodel.view.Statistic',
+		'AppExtJS.viewmodel.view.Shedule',
 		
 		'AppExtJS.viewmodel.view.UpdateForm',
 		'AppExtJS.viewmodel.view.UpdateFormItem',

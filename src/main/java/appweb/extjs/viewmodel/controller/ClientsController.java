@@ -9,6 +9,7 @@ import appweb.extjs.repository.AdminsRepository;
 import appweb.extjs.repository.CitiesRepository;
 import appweb.extjs.repository.ClientsRepository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,21 +59,21 @@ public class ClientsController {
 	}
 
 	@PostMapping("/clients/create")
-	public Boolean create(@RequestParam String secondName, @RequestParam String firstName, @RequestParam String lastName,
-			@RequestParam Integer price, @RequestParam Integer club,  @CookieValue(value = "id", defaultValue = "0") Integer id) {
-		
+	public Boolean create(@RequestParam String firstName, @RequestParam String secondName, @RequestParam String lastName, @RequestParam Date birthday, @RequestParam String phone, @RequestParam Integer id_club, @CookieValue(value = "id", defaultValue = "0") Integer id) {
 		Users user = usersRepository.findById(id).orElse(new Users());
 		Admins admin = adminsRepository.findByUsername(user.getUsername()).orElse(new Admins());
-		Clubs club2 = clubsRepository.findById(club).orElse(new Clubs());
-		Trainers trainer = new Trainers();
-		trainer.setSecondName(secondName);
-		trainer.setFirstName(firstName);
-		trainer.setLastName(lastName);
-		trainer.setPrice(price);
-		trainer.setParentName(club2.getName());
-		trainer.setClubs(club2);
-		trainer.setAdmins(admin);
-		trainersRepository.save(trainer);
+		
+		if(user.getRole().equals("admin")) {
+			Clients client = new Clients();
+			client.setSecondName(secondName);
+			client.setFirstName(firstName);
+			client.setLastName(lastName);
+			client.setBirthday(birthday);
+			client.setPhone(phone);
+			client.setClub(clubsRepository.findById(id_club).get());
+			clientsRepository.save(client);
+		}
+		
 		return true;
 	}
 

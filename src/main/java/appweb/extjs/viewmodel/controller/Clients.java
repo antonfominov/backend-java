@@ -37,6 +37,9 @@ public class Clients {
 	@Type(type="date")
 	private Date birthday;
 	
+	@Column(name = "phone")
+	private String phone;
+	
 	@Column(name = "parentName")
 	private String parentName;
 	
@@ -46,6 +49,10 @@ public class Clients {
 	
 	@ManyToMany(mappedBy = "clients")
     private Set<Trainings> trainings = new HashSet<>();
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="clubs")
+	private Clubs clubs;
 
 	public Integer getId() {
 		return id;
@@ -85,6 +92,23 @@ public class Clients {
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	@JsonIgnore
+	public Clubs getClubs() {
+		return clubs;
+	}
+
+	public void setClub(Clubs clubs) {
+		this.clubs = clubs;
 	}
 
 	public String getParentName() {

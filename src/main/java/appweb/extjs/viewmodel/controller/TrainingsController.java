@@ -72,6 +72,7 @@ public class TrainingsController {
 		training.setParentName(trainer2.getLastName());
 		training.setTrainers(trainer2);
 		training.setAdmins(admin);
+		training.setValue(0);
 		training.setMaxValue(maxValue);
 		trainingsRepository.save(training);
 		return true;
