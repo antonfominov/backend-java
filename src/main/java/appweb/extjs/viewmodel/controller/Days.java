@@ -31,10 +31,6 @@ public class Days {
 	@Column(name = "number")
 	private Integer number;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="admin")
-	private Admins admins;
-	
 	@ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
         name = "Days_Trainings", 
@@ -73,15 +69,6 @@ public class Days {
 
 	public void setNumber(Integer number) {
 		this.number = number;
-	}
-
-	@JsonIgnore
-	public Admins getAdmins() {
-		return admins;
-	}
-
-	public void setAdmins(Admins admins) {
-		this.admins = admins;
 	}
 	
 	@JsonIgnore

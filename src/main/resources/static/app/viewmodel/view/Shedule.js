@@ -2,7 +2,6 @@ Ext.define('AppExtJS.viewmodel.view.Shedule', {
 	extend : 'Ext.panel.Panel',
 	xtype : 'shedule',
 	id : 'shedule',
-	//title : 'Тренировки',
 	width : 1000,
 	height : 500,
 	hideMode : 'visibility',
@@ -23,7 +22,6 @@ Ext.define('AppExtJS.viewmodel.view.Shedule', {
 	controller : 'viewportSheduleController',
 
 	buttonAlign : 'center',
-	reference : 'statistic',
 	listeners : {
 		select : 'myItemClick',
 	},
@@ -31,10 +29,12 @@ Ext.define('AppExtJS.viewmodel.view.Shedule', {
 	style : 'margin: 0 10px 5px 0',
 
 	columnLines : true,
-	store : {
-		//type : 'shedule'
-	},
 	
+
+	items:[{
+		xtype: 'container',
+		layout: 'hbox',
+		style : 'margin: 0 10px 15px 0',
 	items: [{
         xtype: 'combobox',
         emptyText: 'Выберите клуб',
@@ -56,7 +56,16 @@ Ext.define('AppExtJS.viewmodel.view.Shedule', {
                 }
             }
         }
+    }, {
+        xtype: 'button',
+        text: 'Редактировать',
+        handler: 'onSheduleClick',
+        bind : {
+			hidden : '{readOnly}',
+			disabled : '{shedule.readOnly}'
+		}
     }],
+}],
 	
     /*tpl:new Ext.XTemplate(
     		'<table>',

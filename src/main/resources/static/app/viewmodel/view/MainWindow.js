@@ -13,6 +13,7 @@ Ext.define('AppExtJS.viewmodel.view.MainWindow', {
 			'AppExtJS.viewmodel.store.TrainingsStore',
 			'AppExtJS.viewmodel.store.ClientsStore',
 			'AppExtJS.viewmodel.store.StatisticStore',
+			'AppExtJS.viewmodel.store.SheduleStore',
 			
 			'AppExtJS.viewmodel.controller.itemController',
 			'AppExtJS.viewmodel.controller.addController',

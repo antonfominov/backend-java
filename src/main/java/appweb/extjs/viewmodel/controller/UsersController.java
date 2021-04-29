@@ -134,57 +134,23 @@ public class UsersController{
 	    		admins2.setRole(role);
 	    		adminsRepository.save(admins2);
 	    		
-	    		for	(int i=0; i<=6; i++) {
-	    			if(i==0) {
-	    				Days day = new Days();
-	    				day.setName("Понедельник");
-	    				day.setAdmins(admins2);
-	    				day.setNumber(1);
-	    				daysRepository.save(day);	    				
-	    			}
-	    			if(i==1) {
-		    			Days day = new Days();
-		    			day.setName("Вторник");
-		    			day.setAdmins(admins2);
-		    			day.setNumber(2);
-		    			daysRepository.save(day);
-		    		}
-	    			if(i==2) {
-		    			Days day = new Days();
-		    			day.setName("Среда");
-		    			day.setAdmins(admins2);
-		    			day.setNumber(3);
-		    			daysRepository.save(day);
-		    		}
-	    			if(i==3) {
-		    			Days day = new Days();
-		    			day.setName("Четверг");
-		    			day.setAdmins(admins2);
-		    			day.setNumber(4);
-		    			daysRepository.save(day);
-		    		}
-	    			if(i==4) {
-		    			Days day = new Days();
-		    			day.setName("Пятница");
-		    			day.setAdmins(admins2);
-		    			day.setNumber(5);
-		    			daysRepository.save(day);
-		    		}
-	    			if(i==5) {
-		    			Days day = new Days();
-		    			day.setName("Суббота");
-		    			day.setAdmins(admins2);
-		    			day.setNumber(6);
-		    			daysRepository.save(day);
-		    		}
-	    			if(i==6) {
-		    			Days day = new Days();
-		    			day.setName("Воскресенье");
-		    			day.setAdmins(admins2);
-		    			day.setNumber(7);
-		    			daysRepository.save(day);
-		    		}
-	    		}
+			/*
+			 * for (int i=0; i<=6; i++) { if(i==0) { Days day = new Days();
+			 * day.setName("Понедельник"); day.setAdmins(admins2); day.setNumber(1);
+			 * daysRepository.save(day); } if(i==1) { Days day = new Days();
+			 * day.setName("Вторник"); day.setAdmins(admins2); day.setNumber(2);
+			 * daysRepository.save(day); } if(i==2) { Days day = new Days();
+			 * day.setName("Среда"); day.setAdmins(admins2); day.setNumber(3);
+			 * daysRepository.save(day); } if(i==3) { Days day = new Days();
+			 * day.setName("Четверг"); day.setAdmins(admins2); day.setNumber(4);
+			 * daysRepository.save(day); } if(i==4) { Days day = new Days();
+			 * day.setName("Пятница"); day.setAdmins(admins2); day.setNumber(5);
+			 * daysRepository.save(day); } if(i==5) { Days day = new Days();
+			 * day.setName("Суббота"); day.setAdmins(admins2); day.setNumber(6);
+			 * daysRepository.save(day); } if(i==6) { Days day = new Days();
+			 * day.setName("Воскресенье"); day.setAdmins(admins2); day.setNumber(7);
+			 * daysRepository.save(day); } }
+			 */
 	    		
 			}
 			else if (role.equals("user")) {

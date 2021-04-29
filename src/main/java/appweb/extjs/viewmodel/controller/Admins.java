@@ -64,10 +64,6 @@ public class Admins {
     @Column(name = "clients")
     @OneToMany(mappedBy="admins", cascade = CascadeType.ALL)
     private List<Clients> clients;
-    
-    @Column(name = "days")
-    @OneToMany(mappedBy="admins", cascade = CascadeType.ALL)
-    private List<Days> days;
 
     public Integer getId() {
         return id;
@@ -167,14 +163,6 @@ public class Admins {
 
 	public void setClients(List<Clients> clients) {
 		this.clients = clients;
-	}
-
-	public List<Days> getDays() {
-		return days;
-	}
-
-	public void setDays(List<Days> days) {
-		this.days = days;
 	}
 	
 }

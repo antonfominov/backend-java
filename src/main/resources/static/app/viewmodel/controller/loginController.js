@@ -36,6 +36,8 @@ Ext.define('AppExtJS.viewmodel.controller.loginController', {
                         Ext.getCmp('cities').getViewModel().data.isEdit = false;
                         Ext.getCmp('trainers').getViewModel().data.isEdit = false;
                         Ext.getCmp('trainings').getViewModel().data.isEdit = false;
+                        
+                        Ext.getCmp('shedule').setReadOnly(true);
                         }
                     }
                     else{

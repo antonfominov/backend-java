@@ -3,6 +3,7 @@ package appweb.extjs.viewmodel.controller;
 import org.springframework.web.bind.annotation.*;
 
 import appweb.extjs.repository.ClubsRepository;
+import appweb.extjs.repository.DaysRepository;
 import appweb.extjs.repository.UsersRepository;
 import appweb.extjs.repository.AdminsRepository;
 import appweb.extjs.repository.CitiesRepository;
@@ -23,6 +24,8 @@ public class ClubsController {
 	private UsersRepository usersRepository;
 	@Autowired
 	private AdminsRepository adminsRepository;
+	@Autowired
+    private DaysRepository daysRepository;
 
 	@GetMapping("/clubs")
 	public List<Clubs> getAll(@CookieValue(value = "id", defaultValue = "0") Integer id) {
@@ -67,9 +70,68 @@ public class ClubsController {
 		club.setCity(city1);
 		club.setAdmins(admin);
 		
-		admin.getDays().forEach(day -> club.getDaySet().add(day));
-		admin.getDays().forEach(day -> day.getClubSet().add(club));
-		System.out.println(admin.getDays());
+		for	(int i=0; i<=6; i++) {
+			if(i==0) {
+				Days day = new Days();
+				day.setName("Понедельник");
+				day.getClubSet().add(club);
+				club.getDaySet().add(day);
+				day.setNumber(1);
+				daysRepository.save(day);	    				
+			}
+			if(i==1) {
+    			Days day = new Days();
+    			day.setName("Вторник");
+    			day.getClubSet().add(club);
+				club.getDaySet().add(day);
+    			day.setNumber(2);
+    			daysRepository.save(day);
+    		}
+			if(i==2) {
+    			Days day = new Days();
+    			day.setName("Среда");
+    			day.getClubSet().add(club);
+				club.getDaySet().add(day);
+    			day.setNumber(3);
+    			daysRepository.save(day);
+    		}
+			if(i==3) {
+    			Days day = new Days();
+    			day.setName("Четверг");
+    			day.getClubSet().add(club);
+				club.getDaySet().add(day);
+    			day.setNumber(4);
+    			daysRepository.save(day);
+    		}
+			if(i==4) {
+    			Days day = new Days();
+    			day.setName("Пятница");
+    			day.getClubSet().add(club);
+				club.getDaySet().add(day);
+    			day.setNumber(5);
+    			daysRepository.save(day);
+    		}
+			if(i==5) {
+    			Days day = new Days();
+    			day.setName("Суббота");
+    			day.getClubSet().add(club);
+				club.getDaySet().add(day);
+    			day.setNumber(6);
+    			daysRepository.save(day);
+    		}
+			if(i==6) {
+    			Days day = new Days();
+    			day.setName("Воскресенье");
+    			day.getClubSet().add(club);
+				club.getDaySet().add(day);
+    			day.setNumber(7);
+    			daysRepository.save(day);
+    		}
+		}
+		
+		//admin.getDays().forEach(day -> club.getDaySet().add(day));
+		//admin.getDays().forEach(day -> day.getClubSet().add(club));
+		
 		clubsRepository.save(club);
 		return true;
 	}

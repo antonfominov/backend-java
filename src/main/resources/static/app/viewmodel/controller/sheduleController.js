@@ -3,8 +3,8 @@ Ext.define('AppExtJS.viewmodel.controller.sheduleController',
 			extend : 'Ext.app.ViewController',
 			alias : 'controller.viewportSheduleController',
 
-			onAddClick : function() {
-				Ext.create('AppExtJS.viewmodel.view.ClubsEditor', {}).show();
+			onSheduleClick : function() {
+				Ext.create('AppExtJS.viewmodel.view.SheduleEditor', {}).show();
 			},
 
 			userCreate : function() {
@@ -120,7 +120,7 @@ Ext.define('AppExtJS.viewmodel.controller.sheduleController',
 			        success: function(response, options){
 			        	var data = Ext.decode(response.responseText);
 						Ext.getCmp('shedule').setData(data);
-						
+						Ext.getCmp('shedule').setReadOnly(false);
 						
 			        },
 
@@ -128,5 +128,12 @@ Ext.define('AppExtJS.viewmodel.controller.sheduleController',
 			            Ext.MessageBox.alert("Ошибка: " + response.statusText);
 			        }
 			    })
-			}
+			},
+			
+			onAddTraining : function(combo, nameIn, nameOut){
+				var id = Ext.getCmp('shedule-combo').getValue();
+				console.log(id);
+			},
+			
+			
 		});
