@@ -5,16 +5,24 @@ Ext.define('AppExtJS.viewmodel.view.SheduleEditor', {
     controller: 'viewportSheduleController',
     reference : 'shedule-editor',
     height: 400,
-    width: 600,
+    width: 500,
     title: 'Редактирование расписания',
     scrollable: true,
     constrain: true,
     closable: true,
 	autoshow: true,
+	config: {
+		testVar : '',
+		readOnly : false
+	},
+	
+	requires : [ 'AppExtJS.viewmodel.view.SheduleEditorAdd'],
 	
     items: [{
         xtype: 'grid',
+        id: 'sheduleEditorGrid',
         border: false,
+        hideHeaders: true,
         
         plugins: [{
             ptype: 'rowexpander',
@@ -33,17 +41,13 @@ Ext.define('AppExtJS.viewmodel.view.SheduleEditor', {
     	
     	
         columns: [{
-            header: 'Номер',
-            dataIndex: 'id',
-            flex: 1
-        }, {
             header: 'Имя',
             dataIndex: 'name',
             flex: 1
         },{
         	xtype: 'actioncolumn',
         	flex: 1,
-        	width: 50,
+        	width: 60,
             items: [{
             	iconCls : 'x-fa fa-plus',
                 tooltip: 'Добавить тренировку',
@@ -51,7 +55,7 @@ Ext.define('AppExtJS.viewmodel.view.SheduleEditor', {
             },{
             	iconCls : 'x-fa fa-minus',
                 tooltip: 'Удалить тренировку',
-                //handler: 'onRemoveClick'
+                handler: 'onRemoveTraining'
             }]
         }],
     store: Ext.create('Ext.data.Store', {

@@ -158,6 +158,7 @@ public class UsersController{
 				client.setSecondName(secondName);
 				client.setFirstName(firstName);
 				client.setLastName(lastName);
+				client.setAdmins(admins);
 				clientsRepository.save(client);
 			}
     		

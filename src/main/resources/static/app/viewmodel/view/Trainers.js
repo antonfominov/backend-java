@@ -56,8 +56,8 @@ Ext.define('AppExtJS.viewmodel.view.Trainers', {
         headerWidth: 30,
         expandOnDblClick: false,
         rowBodyTpl : new Ext.XTemplate(
-            '<p><b>Фамилия:</b> {secondName}</p>',
-            '<p><b>Имя:</b> {firstName}</p>',
+            '<p><b>Расходы:</b> 1300 рублей</p>',
+            '<p><b>Ожидаемые тренировки:</b> 15</p>',
         )
     }],
 

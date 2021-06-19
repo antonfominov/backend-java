@@ -2,94 +2,16 @@ Ext.define('AppExtJS.viewmodel.controller.sheduleController',
 		{
 			extend : 'Ext.app.ViewController',
 			alias : 'controller.viewportSheduleController',
-
+		
 			onSheduleClick : function() {
 				Ext.create('AppExtJS.viewmodel.view.SheduleEditor', {}).show();
-			},
-
-			userCreate : function() {
-				var name = Ext.getCmp('name').getValue();
-				var adress = Ext.getCmp('adress').getValue();
-				var openTime = Ext.getCmp('openTime').getValue();
-				var closeTime = Ext.getCmp('closeTime').getValue();
-				var city = Ext.getCmp('city').getValue();
-
-				if (name && adress != '') {
-
-					Ext.Ajax.request({
-						url : '/clubs/create',
-						method : 'POST',
-						params : {
-							name : name,
-							adress : adress,
-							openTime : openTime,
-							closeTime : closeTime,
-							city: city
-						}
-					})
-				} else {
-					Ext.MessageBox.alert('Внимание',
-							'Заполните обязательные поля');
-				}
-				Ext.getCmp('clubsEditor').destroy();
-				Ext.data.StoreManager.lookup('clubs').reload();
-			},
-
-			onRemoveClick : function(btn) {
-
-				if (Ext.getCmp('clubs').getView().getSelectionModel()
-						.getSelection()[0] != undefined) {
-					Ext.MessageBox.show({
-						title : 'Внимание',
-						msg : 'Удалить выбранный клуб?',
-						buttons : Ext.MessageBox.YESNO,
-						buttonText : {
-							yes : 'Да',
-							no : 'Нет'
-						},
-						scope : this,
-
-						fn : function(btn, text) {
-							if (btn == 'yes') {
-								var select = this.getView().getSelectionModel().getSelection()[0].data.id;
-								Ext.Ajax.request({
-									url : '/clubs/delete',
-									method : 'POST',
-									params : {
-										id : select
-									},
-
-									success : function(response, options) {
-										Ext.data.StoreManager.lookup('clubs').reload();
-									},
-								})
-							}
-						},
-						animateTarget : btn,
-						icon : Ext.MessageBox.QUESTION,
-					});
-
-				} else {
-					Ext.MessageBox.alert('Внимание',
-							'Выберите клуб для удаления');
-				}
 			},
 
 			onRefreshClick : function() {
 				Ext.data.StoreManager.lookup('clubs').reload();
 				Ext.getCmp('clubs-combo').clearValue();
 			},
-			updateClick(){
-			//	Ext.create('AppExtJS.viewmodel.view.ClubsEditor', {}).show();
-			},
-			/*
-			 * updateClick : function() { if (!win) { var win = new
-			 * AppExtJS.viewmodel.view.UpdateFormItem();
-			 * this.getView().add(win); win.show(); } var select =
-			 * Ext.getCmp('grid-items').getView()
-			 * .getSelectionModel().getSelection()[0].data.name;
-			 * Ext.getCmp('name').setValue(select); },
-			 */
+			
 			myItemClick : function() {
 				Ext.getCmp('clubs').setReadOnly(false);
 			},
@@ -111,7 +33,7 @@ Ext.define('AppExtJS.viewmodel.controller.sheduleController',
 				});
 			},
 			onComboClick : function(combo, nameIn, nameOut){
-				var id = combo.getValue();
+				var id = Ext.getCmp('shedule-combo').getValue();
 				Ext.Ajax.request({
 					url: '/shedule',
 						method: 'GET',
@@ -130,9 +52,131 @@ Ext.define('AppExtJS.viewmodel.controller.sheduleController',
 			    })
 			},
 			
-			onAddTraining : function(combo, nameIn, nameOut){
-				var id = Ext.getCmp('shedule-combo').getValue();
-				console.log(id);
+			onAddTraining : function(combo, nameIn, nameOut, grid, rowIndex, colIndex){
+				var dayId = rowIndex.record.data.id;
+				Ext.getCmp('sheduleEditor').setTestVar(dayId);
+				Ext.getCmp('sheduleEditor').setReadOnly(false);
+				Ext.create('AppExtJS.viewmodel.view.SheduleEditorAdd', {}).show();
+			},
+			
+			onRemoveTraining : function(combo, nameIn, nameOut, grid, rowIndex, colIndex){
+				var dayId = rowIndex.record.data.id;
+				Ext.getCmp('sheduleEditor').setTestVar(dayId);
+				Ext.getCmp('sheduleEditor').setReadOnly(true);
+				Ext.create('AppExtJS.viewmodel.view.SheduleEditorAdd', {}).show();
+			},
+			
+			trainingAdd : function(){
+				if (Ext.getCmp('sheduleEditor').getReadOnly() == true){
+					var dayId = Ext.getCmp('sheduleEditor').getTestVar();
+					var trainingId = Ext.getCmp('shedule-combo-add').getValue();
+					Ext.Ajax.request({
+						url: '/shedule/clubTrainingList/delete',
+						method: 'POST',
+						params:{
+							dayId : dayId,
+							trainingId : trainingId
+						},
+						success: function(response, options){
+							var id = Ext.getCmp('shedule-combo').getSelection().id;
+							Ext.Ajax.request({
+								url : '/shedule',
+								method : 'GET',
+								params: {id_club : id},
+								
+								success : function(response, options) {
+									var data = Ext.decode(response.responseText);
+									Ext.getStore('dayData').setData(data);
+								}
+							});
+							Ext.getCmp('sheduleEditor').getController('sheduleController').onComboClick();
+							Ext.getCmp('sheduleEditorAdd').destroy();
+							Ext.MessageBox.alert('Уведомление', 'Тренировка удалена из расписания');
+						},
+						failure: function(response, options){
+							Ext.MessageBox.alert("Ошибка: " + response.statusText);
+						}
+					})
+				}
+				else {
+					var dayId = Ext.getCmp('sheduleEditor').getTestVar();
+					var trainingId = Ext.getCmp('shedule-combo-add').getValue();
+					Ext.Ajax.request({
+							url: '/shedule/clubTrainingList/create',
+							method: 'POST',
+							params:{
+								dayId : dayId,
+								trainingId : trainingId
+							},
+						success: function(response, options){
+							var id = Ext.getCmp('shedule-combo').getSelection().id;
+								Ext.Ajax.request({
+									url : '/shedule',
+									method : 'GET',
+									params: {id_club : id},
+									
+									success : function(response, options) {
+										var data = Ext.decode(response.responseText);
+										Ext.getStore('dayData').setData(data);
+									}
+								});
+							Ext.getCmp('sheduleEditor').getController('sheduleController').onComboClick();
+							Ext.getCmp('sheduleEditorAdd').destroy();
+							Ext.MessageBox.alert('Уведомление', 'Тренировка добавлена в расписание');
+			        	},
+			        	failure: function(response, options){
+			            	Ext.MessageBox.alert("Ошибка: " + response.statusText);
+			        	}
+			    	})
+				}
+			},
+			
+			onJoinClick: function(){
+				Ext.create('AppExtJS.viewmodel.view.JoinEditor', {}).show();
+			},
+			
+			joinAdd: function(){
+				var idTraining = Ext.getCmp('join-combo').getValue();
+				var idUser = Ext.util.Cookies.get("id");
+				Ext.Ajax.request({
+					url: '/shedule/join',
+						method: 'POST',
+						params: {
+							idTraining: idTraining,
+							idUser : idUser
+						},
+						
+			        success: function(response, options){
+			        	var data = Ext.decode(response.responseText);
+						console.log(data);
+			        },
+
+			        failure: function(response, options){
+			            Ext.MessageBox.alert("Ошибка: " + response.statusText);
+			        }
+			    });
+			},
+			onExitClick: function(){
+				Ext.create('AppExtJS.viewmodel.view.ExitEditor', {}).show();
+			},
+			exitAdd: function(){
+				var idTraining = Ext.getCmp('join-combo').getValue();
+				Ext.Ajax.request({
+					url: '/shedule/exit',
+						method: 'POST',
+						params: {
+							idTraining: idTraining
+						},
+						
+			        success: function(response, options){
+			        	var data = Ext.decode(response.responseText);
+						console.log(data);
+			        },
+
+			        failure: function(response, options){
+			            Ext.MessageBox.alert("Ошибка: " + response.statusText);
+			        }
+			    });
 			},
 			
 			

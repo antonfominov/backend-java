@@ -7,8 +7,11 @@ Ext.define('AppExtJS.viewmodel.model.modelTrainings', {
         {name: 'startTime'},
         {name: 'parentName'},
         {name: 'time', type: 'int'},
+        {name: 'value', type: 'int'},
         {name: 'maxValue', type: 'int'},
         {name: 'price'},
-        {name: 'progress'}
+        {	name: 'progress',
+        	type: 'float',
+        }
        	],
 });

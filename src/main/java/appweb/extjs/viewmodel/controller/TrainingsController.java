@@ -69,7 +69,7 @@ public class TrainingsController {
 		training.setStartTime(startTime);
 		training.setTime(time);
 		training.setPrice(price);
-		training.setParentName(trainer2.getLastName());
+		training.setParentName(trainer2.getSecondName());
 		training.setTrainers(trainer2);
 		training.setAdmins(admin);
 		training.setValue(0);
@@ -80,6 +80,8 @@ public class TrainingsController {
 
 	@PostMapping("/trainings/delete")
 	public void deleteTrainings(@RequestParam Integer id) {
+		Trainings training = trainingsRepository.findById(id).get();
+		trainingsRepository.findById(id).get().getDaySet().forEach(day -> day.getTrainings().remove(training));
 		trainingsRepository.deleteById(id);
 	}
 

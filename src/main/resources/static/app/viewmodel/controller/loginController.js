@@ -30,6 +30,7 @@ Ext.define('AppExtJS.viewmodel.controller.loginController', {
                         if(ob == '1'){
                         Ext.getCmp('main-window').getViewModel().data.readOnly = true;
                         Ext.getCmp('users').setReadOnly(true);
+                        Ext.getCmp('clients').setReadOnly(true);
                         
                         // Запрет редактирования записей если не хватает прав
                         Ext.getCmp('clubs').getViewModel().data.isEdit = false;
@@ -49,13 +50,6 @@ Ext.define('AppExtJS.viewmodel.controller.loginController', {
                     Ext.MessageBox.alert("Ошибка: " + response.statusText);
                 }
                 });
-
-        /*Ext.create('AppExtJS.viewmodel.Container', {
-                items: [
-                    {xtype: 'side-navigation-tabs'}
-                ]
-            }
-        );*/
         }
     }
 });

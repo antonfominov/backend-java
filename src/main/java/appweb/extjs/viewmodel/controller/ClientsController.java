@@ -36,7 +36,9 @@ public class ClientsController {
 	public List<Clients> getAll(@CookieValue(value = "id", defaultValue = "0") Integer id) {
 		Users user = usersRepository.findById(id).orElse(new Users());
 		if(user.getRole().equals("admin")) {
-			List<Clients> clients = adminsRepository.findByUsername(user.getUsername()).orElse(new Admins()).getClients();
+			Admins admin = adminsRepository.findByUsername(user.getUsername()).orElse(new Admins());
+			List<Clients> clients = admin.getClients();
+			System.out.println("CLIENTS" + clients);
 			return clients;
 		}
 		else if(user.getRole().equals("user")) {

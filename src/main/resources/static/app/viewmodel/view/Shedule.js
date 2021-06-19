@@ -16,6 +16,8 @@ Ext.define('AppExtJS.viewmodel.view.Shedule', {
 	config : {
 		readOnly : true
 	},
+	requires : [ 'AppExtJS.viewmodel.view.JoinEditor',
+		'AppExtJS.viewmodel.view.ExitEditor'],
 	publishes: ['readOnly'],
 	reference : 'shedule',
 
@@ -64,6 +66,20 @@ Ext.define('AppExtJS.viewmodel.view.Shedule', {
 			hidden : '{readOnly}',
 			disabled : '{shedule.readOnly}'
 		}
+    },{
+        xtype: 'button',
+        text: 'Записаться',
+        handler: 'onJoinClick',
+        bind : {
+			disabled : '{shedule.readOnly}'
+		}
+    },{
+        xtype: 'button',
+        text: 'Выписаться',
+        handler: 'onExitClick',
+        bind : {
+			disabled : '{shedule.readOnly}'
+		}
     }],
 }],
 	
@@ -90,10 +106,10 @@ Ext.define('AppExtJS.viewmodel.view.Shedule', {
 //	'</tpl>',
     
     tpl:new Ext.XTemplate(
-    		'<table style="border: 1px solid black; border-collapse: collapse;">',
+    		'<table style="border: 1px solid black; border-collapse: collapse; width: 1000px; table-layout: fixed;">',
     		'<tr>',
             '<tpl for=".">',
-            	'<th style="width: 500px; border: 1px solid black;">',
+            	'<th style="border: 1px solid black;">',
 		    	'<p>{name}</p></br>',
 		    	'</th>',
             '</tpl>',
@@ -103,9 +119,6 @@ Ext.define('AppExtJS.viewmodel.view.Shedule', {
 	            	'<td style="border: 1px solid black;">',
 	            	'<tpl for="trainings">',
 	    				'<p>{startTime} - {name}</p></br>',
-	    				'<div id="box-holder">',
-	                    	'<div id="box-{id}"></div>',
-	                    '</div>',
 	    			'</tpl>',
 	    			'</td>',
 	    		'</tpl>',

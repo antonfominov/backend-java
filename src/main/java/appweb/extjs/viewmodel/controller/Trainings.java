@@ -43,6 +43,9 @@ public class Trainings {
 	@Column(name = "maxValue")
 	private Integer maxValue;
 	
+	@Column(name = "progress")
+	private Float progress;
+	
 	@Column(name = "parentName")
 	private String parentName;
 	
@@ -143,6 +146,14 @@ public class Trainings {
 	public void setMaxValue(Integer maxValue) {
 		this.maxValue = maxValue;
 	}
+	
+	public Float getProgress() {
+		return progress;
+	}
+
+	public void setProgress(Float progress) {
+		this.progress = progress;
+	}
 
 	public String getParentName() {
 		return parentName;
@@ -161,8 +172,7 @@ public class Trainings {
 		this.days = days;
 	}
 	
-	@JsonIgnore
-	private Set<Clients> getClientSet() {
+	@JsonIgnore Set<Clients> getClientSet() {
 		return clients;
 	}
 	

@@ -8,6 +8,7 @@ import appweb.extjs.repository.AdminsRepository;
 import appweb.extjs.repository.ClientsRepository;
 import appweb.extjs.repository.ClubsRepository;
 import appweb.extjs.repository.DaysRepository;
+import appweb.extjs.repository.TrainingsRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,6 +39,8 @@ public class StatisticController{
     private ClientsRepository clientsRepository;
     @Autowired
     private ClubsRepository clubsRepository;
+    @Autowired
+    private TrainingsRepository trainingsRepository;
     
     @GetMapping("/statistic")
     public List<Object> getStatistic(@CookieValue(value = "id", defaultValue = "0") Integer id) {
@@ -75,8 +78,84 @@ public class StatisticController{
 		Clubs club = clubsRepository.findById(id_club).get();
 		
 		List<Days> listDays = club.getDaySet().stream().sorted(Comparator.comparing(Days::getNumber)).collect(Collectors.toList());
-		//club.getDaySet();
+		//listDays.forEach(day -> day.getTrainings().stream().sorted(Comparator.comparing(Trainings::getStartTime)).collect(Collectors.toList()));
     	return listDays;
     }
     
+    @GetMapping("/shedule/clubTrainingList")
+    public  List<Trainings> trainings (@RequestParam(required = false) Integer id_club, @RequestParam Boolean readOnly, @RequestParam(required = false) Integer dayId, @CookieValue(value = "id", defaultValue = "0") Integer id) {
+    	List <Trainings> trainings = new ArrayList<>();
+    	if(readOnly == false) {
+    		Clubs club = clubsRepository.findById(id_club).get();
+    		List <Trainers> trainers = club.getTrainers();
+    	
+    		for (Trainers trainer : trainers) {
+    			trainer.getTrainings().forEach(training -> trainings.add(training));
+    		}
+    		return trainings;
+    	}
+		else {
+			Days day = daysRepository.findById(dayId).get();
+			day.getTrainings().forEach(training -> trainings.add(training));
+			return trainings;
+		}
+    }
+    
+    @GetMapping("/shedule/clientTrainingList")
+    public  Set<Trainings> clientTrainings (@RequestParam(required = false) Integer id_club, @RequestParam Boolean readOnly, @RequestParam(required = false) Integer dayId, @CookieValue(value = "id", defaultValue = "0") Integer id) {
+    	return clientsRepository.findBySecondName(usersRepository.findById(id).get().getSecondName()).get().getTrainingSet();
+    }
+    
+    @PostMapping("/shedule/clubTrainingList/create")
+    public Boolean create (@RequestParam Integer dayId, @RequestParam Integer trainingId,  @CookieValue(value = "id", defaultValue = "0") Integer id) {
+    	Days day = daysRepository.findById(dayId).get();
+    	Trainings training = trainingsRepository.findById(trainingId).get();
+    	day.getTrainings().add(training);
+    	training.getDaySet().add(day);
+    	daysRepository.save(day);
+    	trainingsRepository.save(training);
+    	return true;
+    }
+    
+    @PostMapping("/shedule/clubTrainingList/delete")
+    public Boolean create (@RequestParam Integer dayId, @RequestParam Integer trainingId) {
+    	Days day = daysRepository.findById(dayId).get();
+    	Trainings training = trainingsRepository.findById(trainingId).get();
+    	day.getTrainings().remove(training);
+    	training.getDaySet().remove(day);
+    	daysRepository.save(day);
+    	trainingsRepository.save(training);
+    	return true;
+    }
+    
+    @PostMapping("/shedule/join")
+    public Boolean join (@RequestParam Integer idTraining, @RequestParam Integer idUser) {
+    	Users user = usersRepository.findById(idUser).get();
+    	if (user.getRole().equals("user")) {
+    		Clients client = clientsRepository.findBySecondName(user.getSecondName()).get();
+    		Trainings training = trainingsRepository.findById(idTraining).get();
+    		client.getTrainingSet().add(training);
+    		training.getClientSet().add(client);
+    		training.setValue(training.getClientSet().size());
+    		training.setProgress(training.getValue().floatValue()/training.getMaxValue().floatValue());
+    		clientsRepository.save(client);
+    		trainingsRepository.save(training);
+    	}
+    	return true;
+    }
+    
+    @PostMapping("/shedule/exit")
+    public Boolean exit (@RequestParam Integer idTraining, @CookieValue(value = "id", defaultValue = "0") Integer id) {
+    	Users user = usersRepository.findById(id).get();
+    	Clients client = clientsRepository.findBySecondName(user.getSecondName()).get();
+    	Trainings training = trainingsRepository.findById(idTraining).get();
+    	client.getTrainingSet().remove(training);
+    	training.getClientSet().remove(client);
+    	training.setValue(training.getClientSet().size());
+    	training.setProgress(training.getValue().floatValue()/training.getMaxValue().floatValue());
+    	clientsRepository.save(client);
+    	trainingsRepository.save(training);
+    	return true;
+    }
+
 }

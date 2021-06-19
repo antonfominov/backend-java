@@ -52,12 +52,17 @@ Ext.define('AppExtJS.viewmodel.view.Statistic', {
     
     tpl:new Ext.XTemplate(
             '<tpl for="0">',       // process the data.kids node
-            '<h1>{#}. Добро пожаловать, {secondName} {firstName}</h1></br>',
+            '<h1>Добро пожаловать, {secondName} {firstName}</h1></br>',
             	'<tpl switch="role">',
             	'<tpl case="admin">',
                 '<h2>Администратор</h2>',
+                '<h3>Ожидаемое количество клиентов: 31</h3>',
+                '<h3>Ожидаемый доход клубов: 3100 рублей</h3>',
+                '<h3>Ожидаемые зарплаты сотрудников: 1200 рублей</h3>',
                 '<tpl default>',
                 '<h2>Пользователь</h2>',
+                '<h3>Вы записаны:</h3>',
+                '<ul><li>Силовая 12:00</li><li>HIIT 17:00</li></ul>',
                 '</tpl>',
             '</tpl>',    
         ),

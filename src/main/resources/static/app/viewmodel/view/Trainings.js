@@ -17,6 +17,9 @@ Ext.define('AppExtJS.viewmodel.view.Trainings', {
 	},
 	publishes: ['readOnly'],
 	reference : 'trainings',
+	requires: [
+        'Ext.ProgressBarWidget'
+    ],
 
 	controller : 'viewportTrainingsController',
 
@@ -56,7 +59,7 @@ Ext.define('AppExtJS.viewmodel.view.Trainings', {
         headerWidth: 30,
         expandOnDblClick: false,
         rowBodyTpl : new Ext.XTemplate(
-            '<p><b>Фамилия:</b> {secondName}</p>',
+            '<p><b>Ожидаемая заполненность:</b> 25%</p>',
             '<p><b>Максимальное кол-во:</b> {maxValue}</p>',
         )
     }],
@@ -121,20 +124,21 @@ Ext.define('AppExtJS.viewmodel.view.Trainings', {
         xtype    : 'widgetcolumn',
         width    : 120,
         dataIndex : 'progress',
+        value: 0,
         widget: {
             bind: {
-            	text: '{record.value}/{record.maxValue}'
+            	text: '{record.value}/{record.maxValue}',
             },
-            xtype: 'progressbarwidget',
+            xtype: 'progress',
             /*textTpl: [
                 '{value:number("0.0")*100}%'
                 ]*/
-        },
+        }
         /*onWidgetAttach: function(col, widget, record) {
             var sum = col.up("grid").getStore().sum("price")
             widget.setValue(record.get("price")/sum)
         }*/
-    },],
+    }],
 	
 	/*plugins: [{
         ptype: 'rowexpander',

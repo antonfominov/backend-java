@@ -48,32 +48,37 @@ Ext.define('AppExtJS.viewmodel.view.MainWindow', {
 		bodyPadding : 15
 	},
 
-	items : [ {
+	items : [
+//		{
+//		title : 'Главная',
+//		iconCls : 'x-fa fa-home',
+//		hidden: true,
+//		layout : {
+//			type : 'hbox',
+//		},
+//		items : [ {
+//			xtype : 'row-numberer'
+//		}, {
+//			xtype : 'row-numberer-2'
+//		}, ],
+//	}, {
+//		title : 'Общие',
+//		iconCls : 'x-fa fa-list-alt',
+//		hidden: true,
+//		items : [ {
+//			xtype : 'row-numberer4'
+//		} ]
+//	},
+	{
 		title : 'Главная',
-		iconCls : 'x-fa fa-home',
-		layout : {
-			type : 'hbox',
-		},
-		items : [ {
-			xtype : 'row-numberer'
-		}, {
-			xtype : 'row-numberer-2'
-		}, ],
-	}, {
-		title : 'Общие',
 		iconCls : 'x-fa fa-list-alt',
 		items : [ {
-			xtype : 'row-numberer4'
-		} ]
-	}, {
-		title : 'Статистика',
-		iconCls : 'x-fa fa-list-alt',
-		items : [ {
-			xtype : 'statistic'
+			xtype : 'statistic',
+			//xtype : 'pie-chart'
 		} ]
 	}, {
 		title : 'Расписание',
-		iconCls : 'x-fa fa-list-alt',
+		iconCls : 'x-fa fa-calendar',
 		items : [ {
 			xtype : 'shedule'
 		} ]
@@ -103,10 +108,16 @@ Ext.define('AppExtJS.viewmodel.view.MainWindow', {
 		}]
 	},{
 		title : 'Клиенты',
-		iconCls : 'x-fa fa-futbol-o',
+		iconCls : 'x-fa fa-heart',
 		items : [ {
 			xtype : 'clients'
-		}]
+		}],
+		hidden: true,
+		tabConfig: {
+			bind: {
+				hidden : '{readOnly}'
+			}
+		}
 	},{
 		title : 'Пользователи',
 		iconCls : 'x-fa fa-users',
@@ -118,9 +129,6 @@ Ext.define('AppExtJS.viewmodel.view.MainWindow', {
 			bind: {
 				hidden : '{readOnly}'
 			}
-		},
-		bind: {
-			//disabled: '{readOnly}'
 		}
 	}, ]
 });
